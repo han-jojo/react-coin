@@ -4,9 +4,12 @@ import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
 import { ChartProps, IHistorical } from "../interfaces/Coins";
+import { useEffect, useState } from "react";
 
 function Price({ coinId }: ChartProps) {
   const isDark = useRecoilValue(isDarkAtom);
+  const [minValue, SetMinValue] = useState<number>(0);
+
   const { isLoading, data } = useQuery<IHistorical[]>(
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
@@ -14,6 +17,12 @@ function Price({ coinId }: ChartProps) {
       refetchInterval: 1000 * 10,
     }
   );
+
+  useEffect(()=>{
+    if(data !== undefined) {
+      SetMinValue(Math.min(...data?.map(row => row.close)));
+    }
+  }, [data])
 
   return (
     <div>
@@ -24,7 +33,13 @@ function Price({ coinId }: ChartProps) {
           type="line"
           series={[
             {
-              name: "Price",
+              name: "거래량",
+              type: "column",
+              data: data?.map((price) => price.volume),
+            },
+            {
+              name: "시세",
+              type: "line",
               data: data?.map((price) => price.close),
             },
           ]}
@@ -33,30 +48,34 @@ function Price({ coinId }: ChartProps) {
               mode: isDark ? "dark" : "light",
             },
             chart: {
-              height: 300,
-              width: 500,
+              height: 500,
+              width: 200,
+              type: "line",
               toolbar: {
                 show: false,
               },
             },
             stroke: {
-              width: 4,
-            },
-            yaxis: {
-              show: true,
-              labels: {
-                formatter: (value) => `$${value.toFixed(0)}`,
-              },
+              width: [0, 4],
             },
             xaxis: {
               type: "datetime",
               categories: data?.map((price) => price.time_close),
             },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
-            },
-            colors: ["#0fbcf9"],
+            yaxis: [
+              {
+                labels: {
+                  formatter: (value) => `$${value.toFixed(0)}`,
+                },
+              },
+              {
+                opposite: true,
+                labels: {
+                  formatter: (value) => `$${value.toFixed(0)}`,
+                },
+                min: minValue,
+              },
+            ],
             tooltip: {
               y: {
                 formatter: (value) => `$${value.toFixed(2)}`,
