@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/react-coin/static/js/main.60eb97d9.chunk.js",
-    "main.js.map": "/react-coin/static/js/main.60eb97d9.chunk.js.map",
+    "main.js": "/react-coin/static/js/main.ea02ae07.chunk.js",
+    "main.js.map": "/react-coin/static/js/main.ea02ae07.chunk.js.map",
     "runtime-main.js": "/react-coin/static/js/runtime-main.4e19f4b7.js",
     "runtime-main.js.map": "/react-coin/static/js/runtime-main.4e19f4b7.js.map",
     "static/js/2.10b470d5.chunk.js": "/react-coin/static/js/2.10b470d5.chunk.js",
@@ -12,6 +12,6 @@
   "entrypoints": [
     "static/js/runtime-main.4e19f4b7.js",
     "static/js/2.10b470d5.chunk.js",
-    "static/js/main.60eb97d9.chunk.js"
+    "static/js/main.ea02ae07.chunk.js"
   ]
 }
