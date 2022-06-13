@@ -17,9 +17,11 @@ export function fetchCoinTickers(coinId: string) {
 }
 
 export function fetchCoinHistory(coinId: string) {
-  const endDate = Math.floor(Date.now() / 1000);
-  const startDate = endDate - (60 * 60 * 24 * 6);
+  // 정책 변경으로 오늘 하루만 조회가 가능.
+  // const endDate = Math.floor(Date.now() / 1000);
+  // const startDate = endDate - (60 * 60 * 24 * 1);
+  const startDate = Math.floor(Date.now() / 1000);
   return fetch(
-    `${BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`
+    `${BASE_URL}/coins/${coinId}/ohlcv/historical?start=${startDate}`
   ).then((response) => response.json());
 }

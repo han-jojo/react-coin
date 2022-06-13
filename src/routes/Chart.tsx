@@ -5,8 +5,6 @@ import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "../atoms";
 import { ChartProps, IHistorical } from "../interfaces/Coins";
 
-
-
 function Chart({ coinId }: ChartProps) {
   const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data } = useQuery<IHistorical[]>(
@@ -21,7 +19,7 @@ function Chart({ coinId }: ChartProps) {
     <div>
       {isLoading ? (
         "Loading chart..."
-      ) : (
+      ) : Array.isArray(data) ? (
         <ApexChart
           type="candlestick"
           series={[
@@ -69,6 +67,8 @@ function Chart({ coinId }: ChartProps) {
             },
           }}
         />
+      ) : (
+        <h1>API 오류입니다.</h1>
       )}
     </div>
   );

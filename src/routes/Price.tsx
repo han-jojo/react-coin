@@ -14,21 +14,23 @@ function Price({ coinId }: ChartProps) {
     ["ohlcv", coinId],
     () => fetchCoinHistory(coinId),
     {
-      refetchInterval: 1000 * 10,
+      refetchInterval: 1000 * 30,
     }
   );
 
-  useEffect(()=>{
-    if(data !== undefined) {
-      SetMinValue(Math.min(...data?.map(row => row.close)));
+  useEffect(() => {
+    if (Array.isArray(data)) {
+      SetMinValue(Math.min(...data?.map((row) => row.close)));
+    } else {
+      console.log("data: ", data);
     }
-  }, [data])
+  }, [data]);
 
   return (
     <div>
       {isLoading ? (
         "Loading chart..."
-      ) : (
+      ) : Array.isArray(data) ? (
         <ApexChart
           type="line"
           series={[
@@ -83,6 +85,8 @@ function Price({ coinId }: ChartProps) {
             },
           }}
         />
+      ) : (
+        <h1>API 오류입니다.</h1>
       )}
     </div>
   );
